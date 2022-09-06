@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "571909080888",
+    "project_id": "aesthetic-app-c529c",
+    "storage_bucket": "aesthetic-app-c529c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571909080888:android:3c5f913c75b6910449a3cd",
+        "android_client_info": {
+          "package_name": "com.example.aesthetic_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571909080888-sikacam9vqp15sh6akiu9icsi76or442.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUmSaQBSLjNWc4-DbyFBProBzHfak-T88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571909080888-sikacam9vqp15sh6akiu9icsi76or442.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
