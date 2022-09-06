@@ -10,6 +10,9 @@ Here are the details of the assignment:
  
 Brownie points for integrating persistent google authentication using firebase and then allowing only logged-in users to add movies
 
+![image](https://user-images.githubusercontent.com/81767933/188622375-4f46f997-1917-4460-bfdf-c8dd83ea5b35.png)
+
+
 
 
 
