@@ -1,16 +1,16 @@
-# aesthetic_app
+Here are the details of the assignment:
 
-A new Flutter project.
+- Build a simple aesthetic app to add/delete/list movies that a user has watched.
+- Show an infinite scrollable listview containing all the movies that a user has created.
+- Implement a form to add a new movie. (Fields to keep: Name, Director and a poster image of the movie)
+- Each list item should have a delete icon to remove that movie from the list 
+- Store the data in either hive or Shared preference local database.
+- Making an app intro where the user is directed on which button to click and how to go about the app 
+ 
+ 
+Brownie points for integrating persistent google authentication using firebase and then allowing only logged-in users to add movies
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
