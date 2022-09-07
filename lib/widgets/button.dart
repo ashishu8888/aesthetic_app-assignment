@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -16,7 +14,7 @@ class MyButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onpressed,
       style: ElevatedButton.styleFrom(
-        primary: Color(0x68d388).withOpacity(0.2),
+        backgroundColor: Color(0x68d388).withOpacity(0.2),
         minimumSize: const Size(
           double.infinity,
           50,

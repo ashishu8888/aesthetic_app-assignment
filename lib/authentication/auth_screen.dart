@@ -1,10 +1,16 @@
+import 'package:aesthetic_app/authentication/firebase_auth_methods.dart';
+import 'package:aesthetic_app/authentication/otp_screen.dart';
+import 'package:aesthetic_app/common/utils.dart';
 import 'package:aesthetic_app/widgets/button.dart';
+import 'package:aesthetic_app/widgets/text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatefulWidget {
+  static const routeName = "Auth-screen";
   const AuthScreen({super.key});
 
   @override
@@ -13,8 +19,33 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   TextEditingController nameCtr = TextEditingController();
-  TextEditingController phoneCtr = TextEditingController();
+  TextEditingController userCtr = TextEditingController();
+  TextEditingController pwdCtr = TextEditingController();
   bool isLogin = false;
+  bool isLoad = false;
+  void signUpUser() async {
+    FirebaseAuthMethods(auth: FirebaseAuth.instance).signUpWithEmail(
+      email: userCtr.text,
+      password: pwdCtr.text,
+      context: context,
+      name: nameCtr.text,
+    );
+  }
+
+  void loginUser() async {
+    final sure =
+        await FirebaseAuthMethods(auth: FirebaseAuth.instance).loginWithEmail(
+      email: userCtr.text,
+      password: pwdCtr.text,
+      context: context,
+    );
+    if (sure == "fail") {
+      setState(() {
+        isLoad = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
@@ -43,7 +74,7 @@ class _AuthScreenState extends State<AuthScreen> {
               child: isLogin == false
                   ? Container(
                       width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.72,
                       child: Card(
                         // color: Color(0xfceed1).withOpacity(0.6),
                         elevation: 10,
@@ -78,42 +109,49 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: TextField(
+                                child: CustomTextField(
                                   controller: nameCtr,
-                                  decoration: const InputDecoration(
-                                    icon: Icon(Icons.person_outlined),
-                                    border: OutlineInputBorder(),
-                                    hintText: 'name',
-                                  ),
+                                  hintText: "name",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomTextField(
+                                  controller: userCtr,
+                                  hintText: "username",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomTextField(
+                                  controller: pwdCtr,
+                                  hintText: "password",
                                 ),
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  controller: phoneCtr,
-                                  keyboardType: TextInputType.phone,
-                                  decoration: InputDecoration(
-                                    fillColor: Color(0x68d388).withOpacity(0.2),
-                                    icon: Icon(Icons.phone_android),
-                                    border: OutlineInputBorder(),
-                                    hintText: 'phone number',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
                               SizedBox(
                                 width: 100,
-                                child: MyButton(
-                                  onpressed: () {},
-                                  text: "Register",
-                                ),
+                                child: isLoad == false
+                                    ? MyButton(
+                                        onpressed: signUpUser,
+                                        text: "Register",
+                                      )
+                                    : Container(
+                                        child: CircularProgressIndicator(
+                                          color:
+                                              Color(0x68d388).withOpacity(0.2),
+                                        ),
+                                      ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
@@ -144,84 +182,106 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     )
                   : Container(
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.65,
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: Card(
                         elevation: 10,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage: ExactAssetImage(
-                                  'lib/assets/login.png',
-                                  scale: 3),
-                            ),
-                            Text(
-                              "Welcome back",
-                              style: GoogleFonts.poppins(
-                                color: const Color(0x2d545e).withOpacity(0.9),
-                                fontSize: 15,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            Text(
-                              "Log in.",
-                              style: GoogleFonts.poppins(
-                                  color: Color(0x12343b).withOpacity(0.9),
-                                  fontSize: 20),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: phoneCtr,
-                                keyboardType: TextInputType.phone,
-                                decoration: InputDecoration(
-                                  fillColor: Color(0x68d388).withOpacity(0.2),
-                                  icon: Icon(Icons.phone_android),
-                                  border: OutlineInputBorder(),
-                                  hintText: 'phone number',
+                              const CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: ExactAssetImage(
+                                    'lib/assets/login.png',
+                                    scale: 3),
+                              ),
+                              Text(
+                                "Welcome back",
+                                style: GoogleFonts.poppins(
+                                  color: const Color(0x2d545e).withOpacity(0.9),
+                                  fontSize: 15,
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: MyButton(onpressed: () {}, text: "Log in"),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 90),
-                              child: Row(
-                                children: [
-                                  Text('or sign up.'),
-                                  TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        isLogin = false;
-                                      });
-                                    },
-                                    child: Text(
-                                      'Sign up',
-                                      style: GoogleFonts.poppins(
-                                        color: const Color(0x2d545e)
-                                            .withOpacity(0.9),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                              Text(
+                                "Log in.",
+                                style: GoogleFonts.poppins(
+                                    color: Color(0x12343b).withOpacity(0.9),
+                                    fontSize: 20),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomTextField(
+                                  controller: userCtr,
+                                  hintText: "username",
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomTextField(
+                                  controller: pwdCtr,
+                                  hintText: "password",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: isLoad == false
+                                    ? MyButton(
+                                        onpressed: () {
+                                          setState(() {
+                                            isLoad = true;
+                                          });
+                                          loginUser();
+                                        },
+                                        text: "Log in")
+                                    : Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: Color(0x68d388)
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 90),
+                                child: Row(
+                                  children: [
+                                    const Text('or sign up.'),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isLogin = false;
+                                        });
+                                      },
+                                      child: Text(
+                                        'Sign up',
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0x2d545e)
+                                              .withOpacity(0.9),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
